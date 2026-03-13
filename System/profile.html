@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>System | Dark Hexagon Status</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Exo+2:wght@300;600&display=swap');
+
+:root {
+    --cyan: #00eaff;
+    --cyan-glow: rgba(0, 234, 255, 0.4);
+    --red: #ff3e3e;
+    --system-bg: rgba(0, 0, 0, 0.85);
+    --glitch-speed: 5s;
+}
+
+body {
+    background: radial-gradient(circle at center, #000 0%, #111 100%), url('img1.webp');
+    background-size: cover;
+    background-position: center;
+    color: white;
+    font-family: 'Exo 2', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    overflow: hidden;
+    position: relative;
+}
+
+/* --- SCANLINE & NOISE --- */
+body::after {
+    content: "";
+    position: absolute;
+    top:0; left:0; width:100%; height:100%;
+    background: repeating-linear-gradient(0deg, rgba(0,0,0,0.15) 0px, rgba(0,0,0,0.15) 1px, transparent 1px, transparent 3px);
+    pointer-events:none;
+    z-index: 100;
+    animation: scanline-flicker 0.15s infinite;
+}
+
+@keyframes scanline-flicker {
+    0%, 100% { opacity: 0.15; }
+    50% { opacity: 0.08; }
+}
+
+/* --- HEXAGON --- */
+.hexagon-frame {
+    position: relative;
+    width: 650px;
+    padding: 60px 50px;
+    background: var(--system-bg);
+    backdrop-filter: blur(18px) saturate(200%);
+    z-index: 10;
+    clip-path: polygon(10% 0, 90% 0, 100% 15%, 100% 85%, 90% 100%, 10% 100%, 0 85%, 0 15%);
+    border: 2px solid var(--cyan);
+    box-shadow: 
+        0 0 40px var(--cyan-glow), 
+        inset 0 0 25px rgba(0,234,255,0.2);
+    animation: system-entry 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Corner brackets */
+.hexagon-frame::after {
+    content: "";
+    position: absolute;
+    top:0; left:0; right:0; bottom:0;
+    background: 
+        linear-gradient(to right, var(--cyan) 2px, transparent 2px) 0 0,
+        linear-gradient(to bottom, var(--cyan) 2px, transparent 2px) 0 0,
+        linear-gradient(to left, var(--cyan) 2px, transparent 2px) 100% 0,
+        linear-gradient(to bottom, var(--cyan) 2px, transparent 2px) 100% 0,
+        linear-gradient(to right, var(--cyan) 2px, transparent 2px) 0 100%,
+        linear-gradient(to top, var(--cyan) 2px, transparent 2px) 0 100%,
+        linear-gradient(to left, var(--cyan) 2px, transparent 2px) 100% 100%,
+        linear-gradient(to top, var(--cyan) 2px, transparent 2px) 100% 100%;
+    background-repeat: no-repeat;
+    background-size: 25px 25px;
+    opacity: 0.6;
+    pointer-events:none;
+    animation: border-glow 2s infinite alternate;
+}
+
+/* --- HEADER --- */
+.status-header {
+    font-family: 'Orbitron';
+    font-size: 1.6rem;
+    letter-spacing: 8px;
+    text-align: center;
+    margin-bottom: 30px;
+    color: #fff;
+    text-shadow: 0 0 15px var(--cyan);
+    animation: header-glow 2s infinite alternate;
+}
+
+/* --- LEVEL --- */
+.level-row {
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    gap:50px;
+    margin-bottom:40px;
+}
+
+.lvl-number {
+    font-family:'Orbitron';
+    font-size:6rem;
+    font-weight:900;
+    line-height:0.8;
+    text-shadow: 2px 0 0 var(--red), -2px 0 0 var(--cyan);
+    animation: glitch var(--glitch-speed) infinite;
+}
+
+.lvl-label {
+    font-family:'Orbitron';
+    font-size:1rem;
+    color: var(--cyan);
+    letter-spacing:3px;
+}
+
+/* --- JOB DETAILS --- */
+.job-details { font-size:1rem; line-height:2; }
+.cyan-txt { color: var(--cyan); text-shadow:0 0 10px var(--cyan); }
+
+/* --- BARS --- */
+.bar-container {
+    border-top:1px solid rgba(255,255,255,0.15);
+    padding:25px 0;
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:40px;
+}
+.bar-group { position:relative; }
+.bar-label { font-size:0.8rem; font-weight:bold; margin-bottom:8px; display:flex; justify-content:space-between; }
+.bar-bg { height:10px; background: rgba(0,0,0,0.5); border-radius:5px; overflow:hidden; border:1px solid rgba(255,255,255,0.1);}
+.bar-fill {
+    height:100%;
+    transition: width 1.2s ease;
+    box-shadow:0 0 10px var(--cyan);
+}
+.hp { background: linear-gradient(to right, #ff3e3e, #ff6666); width:0; animation: fill-hp 1.5s forwards; }
+.mp { background: linear-gradient(to right, var(--cyan), #66ffff); width:0; animation: fill-mp 1.5s forwards 0.3s; }
+
+@keyframes fill-hp { to { width:100%; } }
+@keyframes fill-mp { to { width:42%; } }
+
+/* --- STATS GRID --- */
+.stats-grid {
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:15px 50px;
+    border-top:1px solid rgba(255,255,255,0.15);
+    padding-top:25px;
+}
+.stat-item {
+    display:flex;
+    justify-content:space-between;
+    font-family:'Orbitron';
+    font-size:1rem;
+    letter-spacing:1px;
+    border-bottom:1px solid rgba(255,255,255,0.05);
+    padding-bottom:5px;
+    transition: transform 0.3s, text-shadow 0.3s;
+}
+.stat-item:hover { transform:scale(1.05); text-shadow:0 0 15px var(--cyan); }
+
+/* --- BUTTON --- */
+.back-btn {
+    position:absolute;
+    top:30px; right:60px;
+    background:none;
+    border:none;
+    color:#444;
+    cursor:pointer;
+    font-size:2rem;
+}
+.back-btn:hover { color: var(--cyan); }
+
+/* --- ANIMATIONS --- */
+@keyframes system-entry {
+    from { opacity:0; transform:scale(1.1) rotateX(15deg); filter:blur(15px); }
+    to { opacity:1; transform:scale(1) rotateX(0); filter:blur(0); }
+}
+
+@keyframes glitch {
+    0% { text-shadow: 2px 0 0 var(--red), -2px 0 0 var(--cyan); }
+    1% { text-shadow: -4px 2px 0 var(--red), 4px -2px 0 var(--cyan); }
+    2% { text-shadow: 2px -2px 0 var(--red), -2px 2px 0 var(--cyan); }
+    20% { text-shadow: 2px 0 0 var(--red), -2px 0 0 var(--cyan); }
+    100% { text-shadow: 2px 0 0 var(--red), -2px 0 0 var(--cyan); }
+}
+
+@keyframes border-glow {
+    0% { box-shadow: 0 0 10px var(--cyan); }
+    100% { box-shadow: 0 0 35px var(--cyan); }
+}
+
+@keyframes header-glow {
+    0% { text-shadow: 0 0 10px var(--cyan); }
+    100% { text-shadow: 0 0 25px var(--cyan); }
+}
+</style>
+</head>
+<body>
+
+<div class="hexagon-frame">
+    <button class="back-btn" onclick="window.history.back()">×</button>
+    
+    <div class="status-header">STATUS</div>
+
+    <div class="level-row">
+        <div style="text-align:center;">
+            <div class="lvl-number">60</div>
+            <div class="lvl-label">LEVEL</div>
+        </div>
+        <div class="job-details">
+            <div>RANK: <span class="cyan-txt">D</span></div>
+            <div>TITLE: <span class="cyan-txt">SHADOW MONARCH</span></div>
+        </div>
+    </div>
+
+    <div class="bar-container">
+        <div class="bar-group">
+            <div class="bar-label"><span>HP</span> <span>2220 / 2220</span></div>
+            <div class="bar-bg"><div class="bar-fill hp"></div></div>
+        </div>
+        <div class="bar-group">
+            <div class="bar-label"><span>MP</span> <span class="cyan-txt">350 / 850</span></div>
+            <div class="bar-bg"><div class="bar-fill mp"></div></div>
+        </div>
+    </div>
+
+    <div class="stats-grid">
+        <div class="stat-item"><span>STR:</span> 48</div>
+        <div class="stat-item"><span>VIT:</span> 27</div>
+        <div class="stat-item"><span>AGI:</span> 27</div>
+        <div class="stat-item"><span>INT:</span> 27</div>
+        <div class="stat-item"><span>PER:</span> 27</div>
+        <div class="stat-item" style="border:none;"><span>AP:</span> <span class="cyan-txt">12</span></div>
+    </div>
+</div>
+
+</body>
+</html>

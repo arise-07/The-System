@@ -1,0 +1,109 @@
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Exo+2:wght@300;600;800&display=swap');
+
+:root {
+    --cyan: #00eaff;
+    --system-bg: rgba(0, 0, 0, 0.85);
+    --system-red: #ff3e3e;
+}
+
+body {
+    background: #000 url('img1.webp') no-repeat center center fixed;
+    background-size: cover;
+    font-family: 'Exo 2', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    overflow: hidden;
+    color: white;
+}
+
+/* Scanline Effect */
+body::after {
+    content: " ";
+    position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+    background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.1) 50%),
+                linear-gradient(90deg, rgba(255, 0, 0, 0.02), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.02));
+    background-size: 100% 4px, 3px 100%;
+    pointer-events: none; z-index: 1;
+}
+
+.system-box {
+    width: 600px;
+    padding: 50px;
+    background: var(--system-bg);
+    backdrop-filter: blur(12px);
+    border: 5px solid var(--cyan);
+    clip-path: polygon(5% 0, 95% 0, 100% 7%, 100% 93%, 95% 100%, 5% 100%, 0 93%, 0 7%);
+    box-shadow: 0 0 20px var(--cyan);
+    text-align: center;
+    z-index: 10;
+    animation: glow 1.5s infinite alternate;
+}
+
+h1 {
+    font-family: 'Orbitron';
+    color: var(--cyan);
+    font-size: 24px;
+    letter-spacing: 2px;
+    min-height: 60px;
+    text-transform: uppercase;
+}
+
+/* Buttons Base */
+button {
+    font-family: 'Orbitron';
+    background: rgba(0, 234, 255, 0.1);
+    border: 1px solid var(--cyan);
+    color: var(--cyan);
+    padding: 12px 30px;
+    cursor: pointer;
+    transition: 0.3s;
+    text-transform: uppercase;
+    font-weight: bold;
+}
+
+button:hover {
+    background: var(--cyan);
+    color: black;
+    box-shadow: 0 0 20px var(--cyan);
+}
+
+.reject { border-color: var(--system-red); color: var(--system-red); }
+
+/* Hidden States - Critical Fix */
+.button-container, .option-box {
+    display: none; 
+    justify-content: center;
+    gap: 20px;
+    margin-top: 30px;
+    opacity: 0;
+}
+
+/* Visibility Trigger */
+.show-flex { 
+    display: flex !important; 
+    opacity: 1 !important; 
+    animation: popIn 0.5s ease-out forwards;
+}
+
+@keyframes popIn {
+    from { transform: scale(0.9); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}
+
+/* Video Overlay */
+#video-overlay {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: black; z-index: 9999;
+    display: flex; justify-content: center; align-items: center;
+    transition: opacity 1s ease;
+}
+
+#monarch-video { width: 100%; height: 100%; object-fit: cover; }
+
+@keyframes glow {
+    from { box-shadow: 0 0 10px var(--cyan); }
+    to { box-shadow: 0 0 25px var(--cyan); }
+}

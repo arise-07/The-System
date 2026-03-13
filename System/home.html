@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Solo Leveling | System Profile</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Exo+2:wght@300;600;800&display=swap');
+
+        :root {
+            --cyan: #00eaff;
+            --purple: #bc13fe;
+            --red: #ff3e3e;
+            --system-bg: rgba(0, 0, 0, 0.9);
+        }
+
+        body {
+            background-image: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.8)), url('img1.webp');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            font-family: 'Exo 2', sans-serif;
+            height: 100vh;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            overflow: hidden;
+        }
+
+        .system-box {
+            width: 750px;
+            min-height: 580px;
+            background: var(--system-bg);
+            backdrop-filter: blur(15px);
+            border: 1px solid var(--cyan);
+            clip-path: polygon(5% 0, 95% 0, 100% 7%, 100% 93%, 95% 100%, 5% 100%, 0 93%, 0 7%);
+            padding: 40px;
+            box-shadow: 0 0 25px rgba(0, 234, 255, 0.3);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .nav-tabs {
+            display: flex;
+            gap: 15px;
+            border-bottom: 1px solid rgba(0, 234, 255, 0.2);
+            padding-bottom: 15px;
+            margin-bottom: 25px;
+        }
+
+        .tab-btn {
+            background: transparent;
+            border: 1px solid var(--cyan);
+            color: var(--cyan);
+            font-family: 'Orbitron';
+            padding: 8px 18px;
+            cursor: pointer;
+            font-size: 11px;
+            letter-spacing: 1px;
+            transition: 0.3s;
+        }
+
+        .tab-btn.active, .tab-btn:hover {
+            background: var(--cyan);
+            color: black;
+            box-shadow: 0 0 15px var(--cyan);
+        }
+
+        .content-section { display: none; animation: fadeIn 0.4s ease; }
+        .content-section.active { display: block; }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* Stats HUD */
+        .rank-text { color: var(--cyan); font-family: 'Orbitron'; font-size: 24px; text-shadow: 0 0 10px var(--cyan); }
+        .stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 20px; }
+        .stat-item { background: rgba(0, 234, 255, 0.05); padding: 15px; border-left: 3px solid var(--cyan); font-family: 'Orbitron'; font-size: 0.9rem;}
+        
+        .bar-container { background: #111; height: 8px; margin-top: 8px; border: 1px solid #333; }
+        .bar-fill { height: 100%; background: var(--cyan); width: 0%; box-shadow: 0 0 10px var(--cyan); transition: 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+
+        /* Mission Grid */
+        .quest-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        .quest-node {
+            background: rgba(0, 234, 255, 0.03);
+            border: 1px solid var(--cyan);
+            color: var(--cyan);
+            padding: 18px;
+            font-family: 'Orbitron';
+            font-size: 11px;
+            cursor: pointer;
+            transition: 0.3s;
+            text-align: left;
+        }
+        .quest-node:hover:not(.locked) { background: var(--cyan); color: black; box-shadow: 0 0 20px var(--cyan); }
+        .quest-node.locked { border-color: var(--red); color: var(--red); opacity: 0.4; cursor: not-allowed; }
+
+        /* Timer HUD */
+        .timer-box { text-align: center; border: 1px solid var(--red); padding: 15px; margin-bottom: 25px; background: rgba(255, 62, 62, 0.05); }
+        #timer-display { font-size: 3rem; color: var(--red); text-shadow: 0 0 15px var(--red); font-family: 'Orbitron'; }
+        
+        .list-item {
+            background: rgba(255, 255, 255, 0.03);
+            margin-bottom: 10px;
+            padding: 15px;
+            border: 1px solid rgba(0, 234, 255, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-family: 'Exo 2';
+        }
+
+        .btn-action { background: var(--cyan); color: black; border: none; padding: 6px 15px; font-weight: 800; font-family: 'Orbitron'; font-size: 10px; cursor: pointer; }
+        .btn-action:hover { box-shadow: 0 0 10px var(--cyan); }
+        
+        .hidden { display: none !important; }
+    </style>
+</head>
+
+<body>
+
+    <div class="system-box">
+        <div class="nav-tabs">
+            <button class="tab-btn active" id="tab-status" onclick="openTab('status')">STATUS</button>
+            <button class="tab-btn" id="tab-inventory" onclick="openTab('inventory')">INVENTORY</button>
+            <button class="tab-btn" id="tab-missions" onclick="openTab('missions')">MISSIONS</button>
+        </div>
+
+        <div id="status" class="content-section active">
+            <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+                <div>
+                    <h1 style="margin:0; font-family:'Orbitron'; letter-spacing: 3px;">SHANE HICKS</h1>
+                    <p style="color: #888; margin: 5px 0; font-size: 0.8rem; letter-spacing: 1px;">JOB: SHADOW MONARCH</p>
+                </div>
+                <div class="rank-text">RANK: E</div>
+            </div>
+
+            <div class="stat-grid">
+                <div class="stat-item" style="grid-column: span 2;">
+                    <span>LEVEL: <span id="lvl-display">1</span></span>
+                    <div class="bar-container"><div id="xp-bar" class="bar-fill"></div></div>
+                </div>
+                <div class="stat-item">STRENGTH: <span id="str-display">10</span></div>
+                <div class="stat-item">ENDURANCE: 10</div>
+                <div class="stat-item">AGILITY: 10</div>
+                <div class="stat-item">SPEED: 10</div>
+            </div>
+        </div>
+
+        <div id="inventory" class="content-section">
+            <h2 style="font-family:'Orbitron'; color: var(--cyan); font-size: 1.2rem; margin-bottom: 20px;">SYSTEM STORAGE</h2>
+            <div class="list-item"><span>[Item] Elixir of Life</span><span style="color: var(--cyan);">x6</span></div>
+            <div class="list-item"><span>[Item] Old Bandages</span><span style="color: var(--cyan);">x5</span></div>
+            <div class="list-item"><span>[Key] Cartenon Temple Key</span><span style="color: var(--cyan);">LEGENDARY</span></div>
+            <div class="list-item"><span>[Skill] Shadow Extraction</span><span style="color: var(--cyan);">x3</span></div>
+            <div class="list-item"><span>[Skill] Full Recovery</span><span style="color: var(--cyan);">x2</span></div>
+        </div>
+
+        <div id="missions" class="content-section">
+            <div id="quest-selector">
+                <h2 style="font-family:'Orbitron'; color: var(--cyan); font-size: 1.2rem; margin-bottom: 20px;">DAILY OBJECTIVES</h2>
+                <div class="quest-grid">
+                    <button class="quest-node" id="node-Chest" onclick="startWorkout('Chest')">01. CHEST DAY</button>
+                    <button class="quest-node" id="node-Back" onclick="startWorkout('Back')">02. BACK DAY</button>
+                    <button class="quest-node" id="node-Legs" onclick="startWorkout('Legs')">03. LEG DAY</button>
+                    <button class="quest-node" id="node-Shoulders" onclick="startWorkout('Shoulders')">04. SHOULDERS</button>
+                    <button class="quest-node" id="node-Core" onclick="startWorkout('Core')">05. CORE/CARDIO</button>
+                    <button class="quest-node" id="node-FullBody" onclick="startWorkout('FullBody')">06. FULL BODY</button>
+                </div>
+            </div>
+
+            <div id="active-quest" class="hidden">
+                <div class="timer-box">
+                    <div style="font-size: 0.6rem; letter-spacing: 3px; color: var(--red); margin-bottom: 5px;">REMAINING TIME</div>
+                    <div id="timer-display">00:00:00</div>
+                </div>
+                <h3 id="current-workout-title" style="color:var(--cyan); font-family:'Orbitron'; font-size: 1rem; margin-bottom: 15px;"></h3>
+                <div id="exercise-list"></div>
+                <button class="tab-btn" onclick="cancelQuest()" style="margin-top:20px; border-color: var(--red); color: var(--red); width: 100%;">ABANDON QUEST</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // --- DATA ---
+        let player = { lvl: 1, xp: 0, str: 10 };
+        let completedQuests = {
+            'Chest': false, 'Back': false, 'Legs': false,
+            'Shoulders': false, 'Core': false, 'FullBody': false
+        };
+
+        const workoutData = {
+            'Chest': { title: 'CHEST & TRICEPS', time: 3600, ex: ['Push-ups: 50', 'Dips: 30', 'Diamond Pushups: 20'] },
+            'Back': { title: 'BACK & BICEPS', time: 3600, ex: ['Pull-ups: 15', 'Rows: 40', 'Bicep Curls: 40'] },
+            'Legs': { title: 'LEG DOMAIN', time: 4500, ex: ['Squats: 100', 'Lunges: 50', 'Calf Raises: 80'] },
+            'Shoulders': { title: 'SHOULDER PRESS', time: 3000, ex: ['Pike Pushups: 25', 'Lateral Raises: 40'] },
+            'Core': { title: 'CORE & CARDIO', time: 3600, ex: ['Plank: 3 mins', 'Leg Raises: 40', 'Sprint: 2km'] },
+            'FullBody': { title: 'SYSTEM OVERLOAD', time: 5400, ex: ['Burpees: 40', 'Thrusters: 30', 'Box Jumps: 30'] }
+        };
+
+        let countdownInterval;
+        let currentActiveType = "";
+
+        // --- CORE LOGIC ---
+
+        function openTab(tabName) {
+            document.querySelectorAll('.content-section').forEach(s => s.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            
+            document.getElementById(tabName).classList.add('active');
+            document.getElementById('tab-' + tabName).classList.add('active');
+            
+            if (tabName === 'missions') refreshMissionList();
+        }
+
+        function startWorkout(type) {
+            if (completedQuests[type]) return;
+
+            currentActiveType = type;
+            const data = workoutData[type];
+
+            document.getElementById('quest-selector').classList.add('hidden');
+            document.getElementById('active-quest').classList.remove('hidden');
+            document.getElementById('current-workout-title').innerText = data.title;
+
+            const list = document.getElementById('exercise-list');
+            list.innerHTML = data.ex.map((e, index) => `
+                <div class="list-item" id="ex-${index}">
+                    <span>${e}</span>
+                    <button class="btn-action" onclick="completeStep(this, ${index})">COMPLETE</button>
+                </div>
+            `).join('');
+
+            runTimer(data.time);
+        }
+
+        function completeStep(btn, index) {
+            btn.parentElement.style.opacity = '0.3';
+            btn.parentElement.style.borderColor = 'transparent';
+            btn.innerText = 'CLEARED';
+            btn.disabled = true;
+            btn.style.background = '#444';
+            
+            // Stats Reward
+            player.xp += 20;
+            if(player.xp >= 100) {
+                player.lvl++;
+                player.xp = 0;
+                player.str += 1;
+                alert("SYSTEM MESSAGE: Level Up attained.");
+            }
+            updateHUD();
+            checkQuestStatus();
+        }
+
+        function checkQuestStatus() {
+            const activeSteps = document.querySelectorAll('.btn-action:not([disabled])');
+            if (activeSteps.length === 0) {
+                clearInterval(countdownInterval);
+                completedQuests[currentActiveType] = true;
+                
+                setTimeout(() => {
+                    alert("QUEST CLEAR. Returning to System Hub.");
+                    document.getElementById('quest-selector').classList.remove('hidden');
+                    document.getElementById('active-quest').classList.add('hidden');
+                    refreshMissionList();
+                }, 800);
+            }
+        }
+
+        function refreshMissionList() {
+            for (let type in completedQuests) {
+                const node = document.getElementById('node-' + type);
+                if (completedQuests[type]) {
+                    node.classList.add('locked');
+                    node.innerHTML = `[CLEARED] ${type.toUpperCase()}`;
+                    node.onclick = null;
+                }
+            }
+        }
+
+        function updateHUD() {
+            document.getElementById('lvl-display').innerText = player.lvl;
+            document.getElementById('str-display').innerText = player.str;
+            document.getElementById('xp-bar').style.width = player.xp + '%';
+        }
+
+        function runTimer(seconds) {
+            let time = seconds;
+            if(countdownInterval) clearInterval(countdownInterval);
+
+            countdownInterval = setInterval(() => {
+                const h = Math.floor(time / 3600);
+                const m = Math.floor((time % 3600) / 60);
+                const s = time % 60;
+                document.getElementById('timer-display').innerText = 
+                    `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+                
+                if (time <= 0) {
+                    clearInterval(countdownInterval);
+                    alert("PENALTY QUEST: Exhaustion Limit Exceeded.");
+                    location.reload(); 
+                }
+                time--;
+            }, 1000);
+        }
+
+        function cancelQuest() {
+            if (confirm("Abandoning the quest will result in a penalty (System Refresh). Proceed?")) {
+                location.reload();
+            }
+        }
+    </script>
+</body>
+</html>
