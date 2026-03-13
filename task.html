@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html lang="en">
+Bro bro 2nd
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Solo Leveling | System Academy</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Exo+2:wght@300;600;800&display=swap');
+
+        :root {
+            --cyan: #00eaff;
+            --cyan-dim: rgba(0, 234, 255, 0.15);
+            --red: #ff3e3e;
+            --purple: #a855f7;
+            --blue: #61dafb;
+            --slate: #475569;
+            --system-bg: rgba(0, 0, 0, 0.9);
+            --code-bg: #0a0a0a;
+        }
+
+        body {
+            background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('img1.webp');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            font-family: 'Exo 2', sans-serif;
+            min-height: 100vh;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            overflow: hidden;
+        }
+
+        .system-box {
+            width: 800px;
+            min-height: 600px;
+            background: var(--system-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--cyan);
+            clip-path: polygon(4% 0, 96% 0, 100% 6%, 100% 94%, 96% 100%, 4% 100%, 0 94%, 0 6%);
+            padding: 45px;
+            box-shadow: 0 0 30px rgba(0, 234, 255, 0.2);
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        /* --- NAV TABS --- */
+        .nav-tabs {
+            display: flex;
+            gap: 10px;
+            border-bottom: 2px solid var(--cyan-dim);
+            padding-bottom: 15px;
+            margin-bottom: 25px;
+        }
+
+        .tab-btn {
+            background: transparent;
+            border: 1px solid var(--cyan);
+            color: var(--cyan);
+            font-family: 'Orbitron';
+            padding: 10px 25px;
+            cursor: pointer;
+            font-size: 11px;
+            letter-spacing: 2px;
+            transition: 0.3s;
+            clip-path: polygon(10% 0, 100% 0, 90% 100%, 0 100%);
+        }
+
+        .tab-btn.active,
+        .tab-btn:hover {
+            background: var(--cyan);
+            color: black;
+            box-shadow: 0 0 15px var(--cyan);
+        }
+
+        .content-section {
+            display: none;
+            animation: fadeIn 0.4s ease;
+        }
+
+        .content-section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(5px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* --- PROFILE HUD --- */
+        .profile-header {
+            display: flex;
+            justify-content: space-between;
+            border-left: 4px solid var(--cyan);
+            padding-left: 20px;
+        }
+
+        .rank-text {
+            color: var(--cyan);
+            font-family: 'Orbitron';
+            font-size: 28px;
+            text-shadow: 0 0 15px var(--cyan);
+        }
+
+        .stat-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-top: 25px;
+        }
+
+        .stat-item {
+            background: var(--cyan-dim);
+            padding: 18px;
+            border: 1px solid rgba(0, 234, 255, 0.3);
+            font-family: 'Orbitron';
+            position: relative;
+        }
+
+        .bar-container {
+            background: #000;
+            height: 6px;
+            margin-top: 10px;
+            border: 1px solid #222;
+            overflow: hidden;
+        }
+
+        .bar-fill {
+            height: 100%;
+            background: var(--cyan);
+            width: 0%;
+            box-shadow: 0 0 10px var(--cyan);
+            transition: 0.8s cubic-bezier(0.075, 0.82, 0.165, 1);
+        }
+
+        /* --- QUEST NODES --- */
+        .quest-container {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .quest-node {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--cyan-dim);
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .quest-node:hover {
+            background: var(--cyan-dim);
+            border-color: var(--cyan);
+            transform: scale(1.01);
+        }
+
+        .quest-info h4 {
+            margin: 0;
+            font-family: 'Orbitron';
+            letter-spacing: 1px;
+        }
+
+        .quest-status {
+            font-family: 'Orbitron';
+            font-size: 10px;
+            border: 1px solid;
+            padding: 4px 8px;
+        }
+
+        /* --- CODESPACE --- */
+        .codespace {
+            background: var(--code-bg);
+            border: 1px solid #222;
+            margin-top: 20px;
+            border-radius: 2px;
+        }
+
+        .codespace-body {
+            padding: 20px;
+            color: #d4d4d4;
+            line-height: 1.6;
+            font-family: 'Courier New', monospace;
+        }
+
+        textarea {
+            width: 100%;
+            background: #000;
+            color: var(--cyan);
+            border: 1px solid var(--cyan);
+            padding: 15px;
+            font-family: 'Orbitron';
+            margin: 15px 0;
+            outline: none;
+            box-sizing: border-box;
+        }
+
+        .btn-full {
+            width: 100%;
+            background: transparent;
+            border: 1px solid var(--cyan);
+            color: var(--cyan);
+            padding: 15px;
+            font-family: 'Orbitron';
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .btn-full:hover {
+            background: var(--cyan);
+            color: black;
+        }
+
+        .level-up-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 999;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        .glow-cyan {
+            color: var(--cyan);
+            font-family: 'Orbitron';
+            font-size: 5rem;
+            text-shadow: 0 0 30px var(--cyan);
+            margin: 0;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        .btn-reset {
+            margin-top: auto;
+            border: 1px solid var(--red);
+            color: var(--red);
+            font-family: 'Orbitron';
+            background: transparent;
+            padding: 10px;
+            cursor: pointer;
+            font-size: 10px;
+            opacity: 0.4;
+            transition: 0.3s;
+        }
+
+        .btn-reset:hover {
+            opacity: 1;
+            background: var(--red);
+            color: white;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="system-box">
+        <div class="nav-tabs">
+            <button class="tab-btn active" id="btn-status" onclick="openTab('status')">STATUS</button>
+            <button class="tab-btn" id="btn-inventory" onclick="openTab('inventory')">INVENTORY</button>
+            <button class="tab-btn" id="btn-missions" onclick="openTab('missions')">MISSIONS</button>
+        </div>
+
+        <div id="status" class="content-section active">
+            <div class="profile-header">
+                <div>
+                    <h1 style="margin:0; font-family:'Orbitron'; letter-spacing: 3px;">SHANE HICKS</h1>
+                    <p style="color: #666; margin: 5px 0; font-size: 0.8rem;">CLASS: SHADOW ARCHITECT</p>
+                </div>
+                <div class="rank-text"><span style="font-size: 14px; opacity: 0.5;">RANK</span> <span
+                        id="rank-display">E</span></div>
+            </div>
+
+            <div class="stat-grid">
+                <div class="stat-item">
+                    <span>LEVEL: <span id="lvl-display">1</span></span>
+                    <div class="bar-container">
+                        <div id="xp-bar" class="bar-fill"></div>
+                    </div>
+                </div>
+                <div class="stat-item">INTELLIGENCE: <span id="int-display">10</span></div>
+                <div class="stat-item">HTML MASTERY: <span id="mastery-display">0</span>/25</div>
+                <div class="stat-item">CSS MASTERY: <span id="css-mastery-display">0</span>/25</div>
+            </div>
+
+            <button class="btn-reset" onclick="resetProgress()">RESTART SYSTEM PROGRESS</button>
+        </div>
+
+        <div id="inventory" class="content-section">
+            <h2
+                style="font-family:'Orbitron'; color: var(--cyan); font-size: 1.1rem; border-bottom: 2px solid var(--cyan-dim); padding-bottom: 10px; letter-spacing: 2px;">
+                PLAYER STORAGE</h2>
+            <div id="inv-list" class="quest-container">
+                <div class="quest-node" style="border-left: 4px solid var(--cyan);">
+                    <div class="quest-info">
+                        <h4 style="color: var(--cyan)">📜 [SKILL BOOK] HTML CORE</h4>
+                        <p style="font-size: 0.7rem; color: #666;">Foundation of web structure.</p>
+                    </div>
+                    <button class="tab-btn" onclick="startAcademy('html')" style="font-size: 9px;">STUDY</button>
+                </div>
+
+                <div class="quest-node" id="css-book-node" style="opacity: 0.5; border-left: 4px solid var(--cyan);">
+                    <div class="quest-info">
+                        <h4 id="inv-css-title" style="color: #555;">📜 [SKILL BOOK] CSS AURA</h4>
+                        <p id="inv-css-desc" style="font-size: 0.7rem; color: #666;">Requirement: 10 HTML Test Score to
+                            unlock.</p>
+                    </div>
+                    <div id="css-status-btn">
+                        <span class="quest-status" style="border-color: #444; color: #444;">LOCKED</span>
+                    </div>
+                </div>
+                <div class="quest-node" id="react-book-node" style="opacity: 0.5; border-left: 4px solid var(--red);">
+
+                    <div class="quest-info">
+
+                        <h4 style="color: #555;">📜[SKILL BOOK] JS MANA</h4>
+
+                        <p style="font-size: 0.7rem; color: #666;">Level up to unlock the system functionality.</p>
+
+                    </div>
+
+                    <div id="react-status-btn">
+
+                        <span class="quest-status" style="border-color: red; color: red;">LOCKED</span>
+
+                    </div>
+
+                </div>
+                <div class="quest-node" id="react-book-node" style="opacity: 0.5; border-left: 4px solid var(--red);">
+
+                    <div class="quest-info">
+
+                        <h4 style="color: #555;">📜[SKILL BOOK] REACT DOMAIN</h4>
+
+                        <p style="font-size: 0.7rem; color: #666;">Requirement: Master JS to unlock.</p>
+
+                    </div>
+
+                    <div id="react-status-btn">
+
+                        <span class="quest-status" style="border-color: red; color: red;">LOCKED</span>
+
+                    </div>
+
+                </div>
+
+
+            </div>
+        </div>
+
+        <div id="missions" class="content-section">
+            <div id="mission-selector">
+                <h2 style="font-family:'Orbitron'; color: var(--cyan); font-size: 1rem; letter-spacing: 2px;">ACTIVE
+                    QUESTS</h2>
+                <div class="quest-container">
+                    <div class="quest-node" onclick="startAcademy('html')">
+                        <div class="quest-info">
+                            <h4 style="color: var(--cyan)">QUEST: ARCHITECT'S STUDY</h4>
+                            <p style="font-size: 0.7rem; color: #888;">Complete HTML tag lessons.</p>
+                        </div>
+                        <div class="quest-status">AVAILABLE</div>
+                    </div>
+
+                    <div class="quest-node" style="margin-top: 15px;" onclick="startTest('html')">
+                        <div class="quest-info">
+                            <h4 style="color: var(--cyan)">DAILY: HTML EVALUATION</h4>
+                            <p style="font-size: 0.7rem; color: #888;">Complete 10 HTML cycles.</p>
+                        </div>
+                        <div class="quest-status" id="test-status">INCOMPLETE</div>
+                    </div>
+
+                    <div id="css-quest-node" class="quest-node hidden" style="margin-top: 15px;"
+                        onclick="startTest('css')">
+                        <div class="quest-info">
+                            <h4 style="color: var(--purple)">DAILY: CSS EVALUATION</h4>
+                            <p style="font-size: 0.7rem; color: #888;">Complete 10 CSS cycles.</p>
+                        </div>
+                        <div class="quest-status" id="css-test-status">INCOMPLETE</div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="academy-active" class="hidden">
+                <div id="lesson-content"></div>
+                <button class="btn-full" onclick="nextLesson()" style="margin-top: 20px;">CONSUME KNOWLEDGE</button>
+            </div>
+
+            <div id="test-active" class="hidden">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <h3 id="test-title" style="font-family: 'Orbitron'; color: var(--cyan); margin: 0;">EVALUATION
+                    </h3>
+                    <span id="test-progress" style="font-family: 'Orbitron'; color: var(--cyan); font-size: 0.9rem;">0 /
+                        10</span>
+                </div>
+                <p id="test-q" style="margin: 20px 0; font-size: 1.1rem; min-height: 60px;"></p>
+                <textarea id="test-input" placeholder="INPUT TAG OR PROPERTY..."></textarea>
+                <button class="btn-full" onclick="checkAnswer()">VALIDATE</button>
+                <div id="test-feedback"
+                    style="margin-top:15px; text-align: center; font-family: 'Orbitron'; min-height: 20px;"></div>
+            </div>
+        </div>
+    </div>
+
+    <div id="levelup-screen" class="level-up-modal">
+        <h1 class="glow-cyan">RANK UP</h1>
+        <p style="letter-spacing: 8px; margin-bottom: 40px; color: var(--cyan);">SYSTEM EVOLUTION COMPLETE</p>
+        <button class="tab-btn" onclick="closeLevelUp()" style="padding: 15px 50px;">PROCEED</button>
+
+    </div>
+    <div id="reset-modal" class="level-up-modal">
+        <h1 style="color: var(--red); font-family: 'Orbitron'; font-size: 3rem; text-shadow: 0 0 20px var(--red);">
+            WARNING</h1>
+        <p style="letter-spacing: 2px; margin-bottom: 40px; text-align: center; color: #ccc;">
+            SYSTEM DATA CORRUPTION IMMINENT.<br>ARE YOU SURE YOU WANT TO RESTART?
+        </p>
+        <div style="display: flex; gap: 20px;">
+            <button class="tab-btn" onclick="confirmReset()"
+                style="border-color: var(--red); color: var(--red);">ACCEPT</button>
+            <button class="tab-btn" onclick="closeResetModal()">ABANDON</button>
+        </div>
+    </div>
+
+    <script>
+        const htmlLessons = [
+            { tag: "<html>", desc: "The root element that wraps all content.", code: `&lt;html&gt; ... &lt;/html&gt;` },
+            { tag: "<head>", desc: "Contains metadata and links to styles.", code: `&lt;head&gt; ... &lt;/head&gt;` },
+            { tag: "<body>", desc: "The main container for visible content.", code: `&lt;body&gt; ... &lt;/body&gt;` },
+            { tag: "<header>", desc: "Introductory content or navigation links.", code: `&lt;header&gt; ... &lt;/header&gt;` },
+            { tag: "<nav>", desc: "Section containing navigation menus.", code: `&lt;nav&gt; ... &lt;/nav&gt;` },
+            { tag: "<section>", desc: "A thematic grouping of content.", code: `&lt;section&gt; ... &lt;/section&gt;` },
+            { tag: "<article>", desc: "Self-contained, independent content.", code: `&lt;article&gt; ... &lt;/article&gt;` },
+            { tag: "<aside>", desc: "Content indirectly related to main text.", code: `&lt;aside&gt; ... &lt;/aside&gt;` },
+            { tag: "<footer>", desc: "The bottom section of a page or area.", code: `&lt;footer&gt; ... &lt;/footer&gt;` },
+            { tag: "<div>", desc: "A generic block-level container.", code: `&lt;div&gt; ... &lt;/div&gt;` },
+            { tag: "<h1>", desc: "The highest level system heading.", code: `&lt;h1&gt; Title &lt;/h1&gt;` },
+            { tag: "<h2>", desc: "A secondary level heading.", code: `&lt;h2&gt; Subtitle &lt;/h2&gt;` },
+            { tag: "<h3>", desc: "A third level heading.", code: `&lt;h3&gt; Label &lt;/h3&gt;` },
+            { tag: "<p>", desc: "Defines a paragraph of text.", code: `&lt;p&gt; Text &lt;/p&gt;` },
+            { tag: "<span>", desc: "An inline container for styling text.", code: `&lt;span&gt; Part &lt;/span&gt;` },
+            { tag: "<ul>", desc: "An unordered (bulleted) list.", code: `&lt;ul&gt; ... &lt;/ul&gt;` },
+            { tag: "<ol>", desc: "An ordered (numbered) list.", code: `&lt;ol&gt; ... &lt;/ol&gt;` },
+            { tag: "<li>", desc: "An individual list item.", code: `&lt;li&gt; Item &lt;/li&gt;` },
+            { tag: "<br>", desc: "Inserts a single line break.", code: `&lt;br /&gt;` },
+            { tag: "<hr>", desc: "A thematic break (horizontal line).", code: `&lt;hr /&gt;` },
+            { tag: "<a>", desc: "A hyperlink to another location.", code: `&lt;a href="#"&gt; Link &lt;/a&gt;` },
+            { tag: "<img>", desc: "Embeds an image in the document.", code: `&lt;img src="url" /&gt;` },
+            { tag: "<button>", desc: "A clickable button element.", code: `&lt;button&gt; Click &lt;/button&gt;` },
+            { tag: "<input>", desc: "An interactive field for user data.", code: `&lt;input type="text" /&gt;` },
+            { tag: "<form>", desc: "A container for collecting user input.", code: `&lt;form&gt; ... &lt;/form&gt;` }
+        ];
+
+        const cssLessons = [
+            { tag: "color", desc: "Defines the color of text inside an element.", code: `<span class="t-attr">color</span>: <span class="t-str">#00eaff</span>;` },
+            { tag: "margin", desc: "Sets the outer spacing of an element from its neighbors.", code: `<span class="t-attr">margin</span>: <span class="t-str">20px auto</span>;` },
+            { tag: "padding", desc: "Sets inner spacing between content and border.", code: `<span class="t-attr">padding</span>: <span class="t-str">15px</span>;` },
+            { tag: "border", desc: "Defines the boundary (width, style, color).", code: `<span class="t-attr">border</span>: <span class="t-str">2px solid var(--cyan)</span>;` },
+            { tag: "border-radius", desc: "Creates rounded corners for elements.", code: `<span class="t-attr">border-radius</span>: <span class="t-str">12px</span>;` },
+            { tag: "width", desc: "Defines the horizontal size of an element.", code: `<span class="t-attr">width</span>: <span class="t-str">100%</span>;` },
+            { tag: "height", desc: "Defines the vertical size of an element.", code: `<span class="t-attr">height</span>: <span class="t-str">500px</span>;` },
+            { tag: "background", desc: "Defines the background color or shorthand styles.", code: `<span class="t-attr">background</span>: <span class="t-str">var(--system-bg)</span>;` },
+            { tag: "background-image", desc: "Adds an image or gradient as the background.", code: `<span class="t-attr">background-image</span>: <span class="t-str">url('aura.png')</span>;` },
+            { tag: "display", desc: "Specifies the layout behavior (block, flex, grid).", code: `<span class="t-attr">display</span>: <span class="t-str">flex</span>;` },
+            { tag: "flex", desc: "Enables flexible arrangement of child elements.", code: `<span class="t-attr">flex</span>: <span class="t-str">1</span>;` },
+            { tag: "flex-direction", desc: "Determines the direction (row or column).", code: `<span class="t-attr">flex-direction</span>: <span class="t-str">column</span>;` },
+            { tag: "justify-content", desc: "Aligns children along the main axis.", code: `<span class="t-attr">justify-content</span>: <span class="t-str">center</span>;` },
+            { tag: "align-items", desc: "Aligns children along the cross axis.", code: `<span class="t-attr">align-items</span>: <span class="t-str">stretch</span>;` },
+            { tag: "position", desc: "Controls positioning (absolute, relative, fixed).", code: `<span class="t-attr">position</span>: <span class="t-str">relative</span>;` },
+            { tag: "z-index", desc: "Determines the stacking order of layers.", code: `<span class="t-attr">z-index</span>: <span class="t-str">999</span>;` },
+            { tag: "opacity", desc: "Controls transparency level (0 to 1).", code: `<span class="t-attr">opacity</span>: <span class="t-str">0.8</span>;` },
+            { tag: "box-shadow", desc: "Applies a shadow around an element.", code: `<span class="t-attr">box-shadow</span>: <span class="t-str">0 0 15px var(--cyan)</span>;` },
+            { tag: "text-align", desc: "Sets horizontal alignment of text.", code: `<span class="t-attr">text-align</span>: <span class="t-str">center</span>;` },
+            { tag: "text-decoration", desc: "Applies lines like underline or none.", code: `<span class="t-attr">text-decoration</span>: <span class="t-str">none</span>;` },
+            { tag: "text-shadow", desc: "Adds depth and glow effects to text.", code: `<span class="t-attr">text-shadow</span>: <span class="t-str">2px 2px #000</span>;` },
+            { tag: "font-family", desc: "Specifies the typeface for text.", code: `<span class="t-attr">font-family</span>: <span class="t-str">'Orbitron'</span>;` },
+            { tag: "font-weight", desc: "Sets the thickness or boldness of text.", code: `<span class="t-attr">font-weight</span>: <span class="t-str">700</span>;` },
+            { tag: "font-size", desc: "Defines the size of text.", code: `<span class="t-attr">font-size</span>: <span class="t-str">1.2rem</span>;` },
+            { tag: "transition", desc: "Creates smooth animations for changes.", code: `<span class="t-attr">transition</span>: <span class="t-str">all 0.3s ease</span>;` },
+            { tag: "transform", desc: "Applies rotate, scale, or translate effects.", code: `<span class="t-attr">transform</span>: <span class="t-str">scale(1.1) rotate(5deg)</span>;` },
+            { tag: "animation", desc: "Applies complex keyframe motion effects.", code: `<span class="t-attr">animation</span>: <span class="t-str">pulse 2s infinite</span>;` },
+            { tag: "filter", desc: "Applies effects like blur, contrast, or grayscale.", code: `<span class="t-attr">filter</span>: <span class="t-str">blur(5px) brightness(1.2)</span>;` },
+            { tag: "cursor", desc: "Changes mouse pointer on hover.", code: `<span class="t-attr">cursor</span>: <span class="t-str">pointer</span>;` },
+            { tag: "overflow", desc: "Handles content that exceeds the box size.", code: `<span class="t-attr">overflow</span>: <span class="t-str">hidden</span>;` },
+            { tag: "overflow-x", desc: "Specifically controls horizontal overflow.", code: `<span class="t-attr">overflow-x</span>: <span class="t-str">scroll</span>;` },
+            { tag: "overflow-y", desc: "Specifically controls vertical overflow.", code: `<span class="t-attr">overflow-y</span>: <span class="t-str">auto</span>;` },
+            { tag: "min-width", desc: "Sets the minimum horizontal size.", code: `<span class="t-attr">min-width</span>: <span class="t-str">300px</span>;` },
+            { tag: "max-width", desc: "Sets the maximum horizontal size.", code: `<span class="t-attr">max-width</span>: <span class="t-str">1200px</span>;` },
+            { tag: "min-height", desc: "Sets the minimum vertical size.", code: `<span class="t-attr">min-height</span>: <span class="t-str">100vh</span>;` },
+            { tag: "max-height", desc: "Sets the maximum vertical size.", code: `<span class="t-attr">max-height</span>: <span class="t-str">80%</span>;` },
+            { tag: "clip-path", desc: "Defines which part of an element is visible.", code: `<span class="t-attr">clip-path</span>: <span class="t-str">polygon(0 0, 100% 0, 80% 100%)</span>;` },
+            { tag: "object-fit", desc: "Specifies how images/videos fit containers.", code: `<span class="t-attr">object-fit</span>: <span class="t-str">cover</span>;` },
+            { tag: "object-position", desc: "Aligns images within their container box.", code: `<span class="t-attr">object-position</span>: <span class="t-str">top center</span>;` },
+            { tag: "white-space", desc: "Controls whitespace and line break behavior.", code: `<span class="t-attr">white-space</span>: <span class="t-str">nowrap</span>;` },
+            { tag: "word-wrap", desc: "Allows long words to wrap to the next line.", code: `<span class="t-attr">word-wrap</span>: <span class="t-str">break-word</span>;` },
+            { tag: "word-break", desc: "Specifies line breaking rules for words.", code: `<span class="t-attr">word-break</span>: <span class="t-str">break-all</span>;` },
+            { tag: "overflow-wrap", desc: "Breaks text to prevent container overflow.", code: `<span class="t-attr">overflow-wrap</span>: <span class="t-str">anywhere</span>;` },
+            { tag: "backdrop-filter", desc: "Applies effects to the area behind the element.", code: `<span class="t-attr">backdrop-filter</span>: <span class="t-str">blur(10px)</span>;` },
+            { tag: "pointer-events", desc: "Controls how an element reacts to mouse clicks.", code: `<span class="t-attr">pointer-events</span>: <span class="t-str">none</span>;` },
+            { tag: "clip", desc: "Defines a rectangular visible region (Legacy).", code: `<span class="t-attr">clip</span>: <span class="t-str">rect(0, 0, 0, 0)</span>;` },
+            { tag: "content", desc: "Generates content for ::before and ::after.", code: `<span class="t-attr">content</span>: <span class="t-str">"★"</span>;` },
+            { tag: "mix-blend-mode", desc: "Sets how content blends with backgrounds.", code: `<span class="t-attr">mix-blend-mode</span>: <span class="t-str">overlay</span>;` },
+            { tag: "isolation", desc: "Controls stacking context for blend modes.", code: `<span class="t-attr">isolation</span>: <span class="t-str">isolate</span>;` }
+        ];
+
+
+
+        let player = JSON.parse(localStorage.getItem('solo_v2_save')) || {
+            lvl: 1, xp: 0, int: 10, rank: 'E', testsCleared: 0, cssTestsCleared: 0,
+            htmlDone: false, cssDone: false
+        };
+
+        let currentLibrary = htmlLessons;
+        let currentStep = 0;
+        let testTarget = "";
+        let testCount = 0;
+        let currentTestMode = 'html';
+
+        function openTab(name) {
+            document.querySelectorAll('.content-section').forEach(s => s.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            document.getElementById(name).classList.add('active');
+            document.getElementById('btn-' + name).classList.add('active');
+
+            document.getElementById('mission-selector').classList.remove('hidden');
+            document.getElementById('academy-active').classList.add('hidden');
+            document.getElementById('test-active').classList.add('hidden');
+        }
+
+        function startAcademy(type) {
+            openTab('missions');
+            currentLibrary = (type === 'css') ? cssLessons : htmlLessons;
+            currentStep = 0;
+            document.getElementById('mission-selector').classList.add('hidden');
+            document.getElementById('academy-active').classList.remove('hidden');
+            renderLesson();
+        }
+
+        function renderLesson() {
+            const lesson = currentLibrary[currentStep];
+            document.getElementById('lesson-content').innerHTML = `
+                <h1 style="font-family:'Orbitron'; font-size: 3.5rem; margin: 15px 0;">${lesson.tag}</h1>
+                <p style="color: #888;">"${lesson.desc}"</p>
+                <div class="codespace"><div class="codespace-body">${lesson.code}</div></div>
+            `;
+        }
+
+        function nextLesson() {
+            player.xp += 10;
+            if (currentStep < currentLibrary.length - 1) {
+                currentStep++;
+                renderLesson();
+            } else {
+                openTab('status');
+            }
+            checkLevel();
+        }
+
+        function startTest(mode) {
+            currentTestMode = mode;
+            testCount = 0;
+            document.getElementById('mission-selector').classList.add('hidden');
+            document.getElementById('test-active').classList.remove('hidden');
+            generateQuestion();
+        }
+
+        function generateQuestion() {
+            document.getElementById('test-progress').innerText = `${testCount} / 10`;
+            let pool = (currentTestMode === 'html') ? htmlLessons : cssLessons;
+            const lesson = pool[Math.floor(Math.random() * pool.length)];
+            testTarget = lesson.tag.replace('<', '').replace('>', '').toLowerCase();
+            document.getElementById('test-q').innerText = `[${currentTestMode.toUpperCase()}] WHAT IS THE KEY FOR: "${lesson.desc}"?`;
+            document.getElementById('test-input').value = "";
+        }
+
+        function checkAnswer() {
+            const inputField = document.getElementById('test-input');
+            const feedback = document.getElementById('test-feedback');
+
+            // Normalize input
+            const userInput = inputField.value.trim().toLowerCase().replace(/[<>]/g, '');
+
+            if (userInput === testTarget) {
+                testCount++;
+                player.xp += 20;
+
+                feedback.innerHTML = `<span style="color:var(--cyan); text-shadow: 0 0 10px var(--cyan);">[SYSTEM: SYNC COMPLETE]</span>`;
+
+                if (testCount >= 10) {
+                    // FIX: Changed 'testMode' to 'currentTestMode' to match your variable
+                    if (currentTestMode === 'html') {
+                        player.testsCleared += 10;
+                    } else {
+                        player.cssTestsCleared += 10;
+                    }
+
+                    player.xp += 50;
+
+                    // Check for Rank Up BEFORE updating HUD and closing
+                    checkRankUp();
+
+                    setTimeout(() => {
+                        openTab('status');
+                        updateHUD();
+                    }, 1200);
+                } else {
+                    setTimeout(generateQuestion, 800);
+                }
+            } else {
+                feedback.innerHTML = `<span style="color:var(--red); text-shadow: 0 0 10px var(--red);">[SYSTEM: DESYNC - TRY AGAIN]</span>`;
+                inputField.style.borderColor = 'var(--red)';
+                setTimeout(() => { inputField.style.borderColor = 'var(--cyan)'; }, 500);
+            }
+
+            checkLevel();
+        }
+
+        function checkRankUp() {
+            // This will trigger the Rank Up screen if you hit 10 points and are still Rank E
+            if (player.testsCleared >= 10 && player.rank === 'E') {
+                player.rank = 'D';
+                document.getElementById('levelup-screen').style.display = 'flex';
+                // Save immediately so the rank change persists
+                localStorage.setItem('solo_v2_save', JSON.stringify(player));
+            }
+        }
+
+        function checkLevel() {
+            while (player.xp >= 100) {
+                player.lvl++;
+                player.xp -= 100;
+                player.int += 2;
+            }
+            updateHUD();
+        }
+
+
+        function resetProgress() {
+            // Show the custom UI modal instead of the browser alert
+            document.getElementById('reset-modal').style.display = 'flex';
+        }
+
+        function confirmReset() {
+            localStorage.removeItem('solo_v2_save');
+            location.reload();
+        }
+
+        function closeResetModal() {
+            document.getElementById('reset-modal').style.display = 'none';
+        }
+        function updateHUD() {
+            document.getElementById('lvl-display').innerText = player.lvl;
+            document.getElementById('int-display').innerText = player.int;
+            document.getElementById('rank-display').innerText = player.rank;
+            document.getElementById('xp-bar').style.width = player.xp + '%';
+            document.getElementById('mastery-display').innerText = player.testsCleared;
+            document.getElementById('css-mastery-display').innerText = player.cssTestsCleared;
+            document.getElementById('test-status').innerText = player.testsCleared >= 10 ? "CLEARED" : `${player.testsCleared}/10`;
+            document.getElementById('css-test-status').innerText = player.cssTestsCleared >= 10 ? "CLEARED" : `${player.cssTestsCleared}/10`;
+
+            if (player.testsCleared >= 10) {
+                document.getElementById('css-book-node').style.opacity = "1";
+                document.getElementById('inv-css-title').style.color = "var(--cyan)";
+                document.getElementById('css-status-btn').innerHTML = `<button class="tab-btn" onclick="startAcademy('css')" style="font-size: 9px;">STUDY</button>`;
+                document.getElementById('css-quest-node').classList.remove('hidden');
+            }
+            localStorage.setItem('solo_v2_save', JSON.stringify(player));
+        }
+
+        function closeLevelUp() { document.getElementById('levelup-screen').style.display = 'none'; }
+
+        updateHUD();
+    </script>
+    <a href="/" style="position: fixed; bottom: 20px; right: 20px; padding: 10px 20px; background: rgba(0, 234, 255, 0.1); border: 1px solid #00eaff; color: #00eaff; text-decoration: none; font-family: 'Orbitron'; font-size: 11px; cursor: pointer; letter-spacing: 1px; transition: 0.3s;" onmouseover="this.style.background='#00eaff'; this.style.color='black';" onmouseout="this.style.background='rgba(0, 234, 255, 0.1)'; this.style.color='#00eaff';">← BACK</a>
+</body>
+
+</html>Yeah
